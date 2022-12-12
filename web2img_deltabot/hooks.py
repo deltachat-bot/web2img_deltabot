@@ -12,7 +12,7 @@ from .const import Browser
 from .orm import init
 from .utils import get_settings, get_url
 
-cli = BotCli()
+cli = BotCli("web2img-bot")
 
 
 @cli.on(events.RawEvent)
