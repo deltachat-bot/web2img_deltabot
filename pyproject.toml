@@ -24,6 +24,7 @@ dependencies = [
     "SQLAlchemy>=1.4.44",
     "aiosqlite>=0.17.0",
     "aiofiles>=22.1.0",
+    "playwright>=1.28.0",
     "simplebot-aio",
 ]
 
