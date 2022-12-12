@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "web2img-deltabot"
+description = "Delta Chat bot to take website screenshots"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE.txt"}
+keywords = ["deltachat", "bot"]
+authors = [
+  {email = "adbenitez@hispanilandia.net"},
+  {name = "adbenitez"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+dynamic = [
+    "version"
+]
+dependencies = [
+    "SQLAlchemy>=1.4.44",
+    "aiosqlite>=0.17.0",
+    "aiofiles>=22.1.0",
+    "simplebot-aio",
+]
+
+[project.optional-dependencies]
+test = [
+  "black",
+  "mypy",
+  "isort",
+  "pylint",
+  "pylama",
+  "pytest",
+  "types-aiofiles",
+]
+
+[project.scripts]
+web2img-bot = "web2img_deltabot:main"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = "True"
