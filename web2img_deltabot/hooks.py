@@ -25,7 +25,7 @@ async def log_event(event: AttrDict) -> None:
         logging.error(event.msg)
 
 
-@cli.on(events.NewMessage(func=lambda ev: not ev.command))
+@cli.on(events.NewMessage(is_info=False))
 async def on_msg(event: AttrDict) -> None:
     """Extract the URL from the incoming message and send it as image."""
     snapshot = await event.chat.get_basic_snapshot()
