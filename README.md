@@ -27,7 +27,7 @@ web2img-bot init bot@example.org SuperHardPassword
 To customize the bot name, avatar and status/signature:
 
 ```sh
-web2img-bot set_avatar /path/to/avatar.png
+web2img-bot set_avatar "/path/to/avatar.png"
 web2img-bot config displayname "Web to Image"
 web2img-bot config selfstatus "Hi, send me some URL to convert it to image"
 ```
