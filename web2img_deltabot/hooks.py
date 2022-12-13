@@ -74,6 +74,7 @@ async def _web2img(url: str, event: AttrDict) -> None:
         async with aiofiles.tempfile.TemporaryDirectory() as tmp_dir:
             path = pathlib.Path(tmp_dir, f"screenshot.{cfg.img_type}")
             if get_url(page.url):
+                await asyncio.sleep(5)
                 await page.screenshot(
                     path=path,
                     quality=cfg.quality,
