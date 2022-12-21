@@ -28,14 +28,14 @@ async def log_event(event: AttrDict) -> None:
 @cli.on(events.NewMessage(is_info=False))
 async def on_msg(event: AttrDict) -> None:
     """Extract the URL from the incoming message and send it as image."""
-    snapshot = await event.chat.get_basic_snapshot()
-    url = get_url(event.text)
+    snapshot = await event.message_snapshot.chat.get_basic_snapshot()
+    url = get_url(event.message_snapshot.text)
     if url:
-        asyncio.create_task(web2img(url, event))
+        asyncio.create_task(web2img(url, event.message_snapshot))
     elif snapshot.chat_type == const.ChatType.SINGLE:
-        await event.chat.send_message(
+        await event.message_snapshot.chat.send_message(
             text="Send me any website URL to save it as image, for example: https://delta.chat",
-            quoted_msg=event.id,
+            quoted_msg=event.message_snapshot.id,
         )
 
 
@@ -46,19 +46,19 @@ async def on_start(bot: Bot, args: Namespace) -> None:
     await init(f"sqlite+aiosqlite:///{path}")
 
 
-async def web2img(url: str, event: AttrDict) -> None:
+async def web2img(url: str, snapshot: AttrDict) -> None:
     """Convert URL to image and send it in the chat it was requested."""
     try:
-        await _web2img(url, event)
+        await _web2img(url, snapshot)
     except Exception as ex:
         logging.exception(ex)
-        await event.chat.send_message(
-            text=f"Failed to convert URL: {ex}", quoted_msg=event.id
+        await snapshot.chat.send_message(
+            text=f"Failed to convert URL: {ex}", quoted_msg=snapshot.id
         )
 
 
-async def _web2img(url: str, event: AttrDict) -> None:
-    cfg = await get_settings(event.sender.id)
+async def _web2img(url: str, snapshot: AttrDict) -> None:
+    cfg = await get_settings(snapshot.sender.id)
     async with async_playwright() as playwright:
         if cfg.browser == Browser.FIREFOX:
             browser_type = playwright.firefox
@@ -83,9 +83,9 @@ async def _web2img(url: str, event: AttrDict) -> None:
                     full_page=cfg.full_page,
                     animations=cfg.animations,
                 )
-                await event.chat.send_message(file=str(path), quoted_msg=event.id)
+                await snapshot.chat.send_message(file=str(path), quoted_msg=snapshot.id)
             else:
                 text = f"Invalid URL redirection: {url!r} -> {page.url!r}"
                 logging.warning(text)
-                await event.chat.send_message(text=text, quoted_msg=event.id)
+                await snapshot.chat.send_message(text=text, quoted_msg=snapshot.id)
             await browser.close()
