@@ -40,7 +40,7 @@ async def on_msg(event: AttrDict) -> None:
 
 
 @cli.on_start
-async def on_start(bot: Bot, args: Namespace) -> None:
+async def on_start(_bot: Bot, args: Namespace) -> None:
     """Initialize database"""
     path = pathlib.Path(args.config_dir, "sqlite.db")
     await init(f"sqlite+aiosqlite:///{path}")
