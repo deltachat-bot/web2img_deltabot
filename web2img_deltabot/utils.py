@@ -35,11 +35,15 @@ async def get_settings(contact_id) -> Namespace:
             animations=user and user.animations,
         )
     if settings.img_type is None:
-        settings.img_type = "png"
+        settings.img_type = "jpeg"
+    if settings.scale is None:
+        settings.scale = "css"
     if settings.img_type == "png":
         settings.quality = None
     else:
         settings.omit_background = False
+        if settings.quality is None:
+            settings.quality = 90
     if settings.full_page is None:
         settings.full_page = True
     return settings
