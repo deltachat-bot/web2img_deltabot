@@ -108,7 +108,7 @@ async def take_screenshot(page, cfg, path) -> bool:
     max_size = 1024**2 * 10
     cfg.img_type = "jpeg"
     cfg.omit_background = False
-    while size > max_size and cfg.quality >= 50:
+    while size > max_size and cfg.quality >= 40:
         cfg.quality -= 10
         size = await _take_screenshot()
     return size <= max_size
