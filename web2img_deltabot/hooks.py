@@ -77,6 +77,7 @@ async def _web2img(url: str, snapshot: AttrDict) -> None:
                 await asyncio.sleep(5)
                 await page.screenshot(
                     path=path,
+                    type=cfg.img_type,
                     quality=cfg.quality,
                     scale=cfg.scale,
                     omit_background=cfg.omit_background,
