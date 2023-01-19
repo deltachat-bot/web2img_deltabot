@@ -75,18 +75,40 @@ async def _web2img(url: str, snapshot: AttrDict) -> None:
             path = pathlib.Path(tmp_dir, f"screenshot.{cfg.img_type}")
             if get_url(page.url):
                 await asyncio.sleep(5)
-                await page.screenshot(
-                    path=path,
-                    type=cfg.img_type,
-                    quality=cfg.quality,
-                    scale=cfg.scale,
-                    omit_background=cfg.omit_background,
-                    full_page=cfg.full_page,
-                    animations=cfg.animations,
-                )
-                await snapshot.chat.send_message(file=str(path), quoted_msg=snapshot.id)
+                if await take_screenshot(page, cfg, path):
+                    await snapshot.chat.send_message(
+                        file=str(path), quoted_msg=snapshot.id
+                    )
+                else:
+                    await snapshot.chat.send_message(
+                        text="Ignoring URL, page too big", quoted_msg=snapshot.id
+                    )
             else:
                 text = f"Invalid URL redirection: {url!r} -> {page.url!r}"
                 logging.warning(text)
                 await snapshot.chat.send_message(text=text, quoted_msg=snapshot.id)
             await browser.close()
+
+
+async def take_screenshot(page, cfg, path) -> bool:
+    async def _take_screenshot() -> int:
+        return len(
+            await page.screenshot(
+                path=path,
+                type=cfg.img_type,
+                quality=cfg.quality,
+                scale=cfg.scale,
+                omit_background=cfg.omit_background,
+                full_page=cfg.full_page,
+                animations=cfg.animations,
+            )
+        )
+
+    size = await _take_screenshot()
+    max_size = 1024**2 * 10
+    cfg.img_type = "jpeg"
+    cfg.omit_background = False
+    while size > max_size and cfg.quality >= 50:
+        cfg.quality -= 10
+        size = await _take_screenshot()
+    return size <= max_size
