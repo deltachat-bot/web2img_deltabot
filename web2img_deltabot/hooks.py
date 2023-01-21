@@ -43,11 +43,13 @@ async def log_event(event: AttrDict) -> None:
 @cli.on(events.NewMessage(is_info=False))
 async def on_msg(event: AttrDict) -> None:
     """Extract the URL from the incoming message and send it as image."""
-    snapshot = await event.message_snapshot.chat.get_basic_snapshot()
     url = get_url(event.message_snapshot.text)
     if url:
         asyncio.create_task(web2img(url, event.message_snapshot))
-    elif snapshot.chat_type == const.ChatType.SINGLE:
+        return
+
+    chat = await event.message_snapshot.chat.get_basic_snapshot()
+    if chat.chat_type == const.ChatType.SINGLE:
         await event.message_snapshot.chat.send_message(
             text="Send me any website URL to save it as image, for example: https://delta.chat",
             quoted_msg=event.message_snapshot.id,
