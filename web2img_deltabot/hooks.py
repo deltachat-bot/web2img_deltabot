@@ -15,6 +15,21 @@ from .utils import get_settings, get_url
 cli = BotCli("web2img-bot")
 
 
+@cli.on_init
+async def on_init(bot: Bot, _args: Namespace) -> None:
+    if not await bot.account.get_config("displayname"):
+        await bot.account.set_config("displayname", "Web To Image")
+        status = "📸 I am a Delta Chat bot, send me any website URL to save it as image"
+        await bot.account.set_config("selfstatus", status)
+
+
+@cli.on_start
+async def on_start(_bot: Bot, args: Namespace) -> None:
+    """Initialize database"""
+    path = pathlib.Path(args.config_dir, "sqlite.db")
+    await init(f"sqlite+aiosqlite:///{path}")
+
+
 @cli.on(events.RawEvent)
 async def log_event(event: AttrDict) -> None:
     if event.type == EventType.INFO:
@@ -37,13 +52,6 @@ async def on_msg(event: AttrDict) -> None:
             text="Send me any website URL to save it as image, for example: https://delta.chat",
             quoted_msg=event.message_snapshot.id,
         )
-
-
-@cli.on_start
-async def on_start(_bot: Bot, args: Namespace) -> None:
-    """Initialize database"""
-    path = pathlib.Path(args.config_dir, "sqlite.db")
-    await init(f"sqlite+aiosqlite:///{path}")
 
 
 async def web2img(url: str, snapshot: AttrDict) -> None:
