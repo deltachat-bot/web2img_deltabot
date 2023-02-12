@@ -5,8 +5,8 @@ import pathlib
 from argparse import Namespace
 
 import aiofiles
+from deltabot_cli import AttrDict, Bot, BotCli, EventType, const, events
 from playwright.async_api import async_playwright
-from simplebot_aio import AttrDict, Bot, BotCli, EventType, const, events
 
 from .const import Browser
 from .orm import init
