@@ -6,7 +6,15 @@ from argparse import Namespace
 
 import aiofiles
 from playwright.async_api import async_playwright
-from simplebot_aio import AttrDict, Bot, BotCli, EventType, const, events
+from simplebot_aio import (
+    AttrDict,
+    Bot,
+    BotCli,
+    EventType,
+    const,
+    events,
+    run_in_background,
+)
 
 from .const import Browser
 from .orm import init
@@ -45,7 +53,7 @@ async def on_msg(event: AttrDict) -> None:
     """Extract the URL from the incoming message and send it as image."""
     url = get_url(event.message_snapshot.text)
     if url:
-        asyncio.create_task(web2img(url, event.message_snapshot))
+        run_in_background(web2img(url, event.message_snapshot))
         return
 
     chat = await event.message_snapshot.chat.get_basic_snapshot()
