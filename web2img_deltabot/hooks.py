@@ -6,19 +6,11 @@ from argparse import Namespace
 
 import aiofiles
 from playwright.async_api import async_playwright
-from simplebot_aio import (
-    AttrDict,
-    Bot,
-    BotCli,
-    EventType,
-    const,
-    events,
-    run_in_background,
-)
+from simplebot_aio import AttrDict, Bot, BotCli, EventType, const, events
 
 from .const import Browser
 from .orm import init
-from .utils import get_settings, get_url
+from .utils import get_settings, get_url, run_in_background
 
 cli = BotCli("web2img-bot")
 

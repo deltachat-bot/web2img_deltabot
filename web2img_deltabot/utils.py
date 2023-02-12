@@ -1,7 +1,8 @@
 """Utilities"""
+import asyncio
 import re
 from argparse import Namespace
-from typing import Optional
+from typing import Coroutine, Optional
 
 from sqlalchemy.future import select
 
@@ -10,6 +11,16 @@ from .orm import User, async_session
 url_regex = re.compile(
     r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 )
+_background_tasks = set()
+
+
+def run_in_background(coro: Coroutine) -> None:
+    """Schedule the execution of a coroutine object in a spawn task, keeping a
+    reference to the task to avoid it disappearing mid-execution due to GC.
+    """
+    task = asyncio.create_task(coro)
+    _background_tasks.add(task)
+    task.add_done_callback(_background_tasks.discard)
 
 
 def get_url(text: str) -> Optional[str]:
