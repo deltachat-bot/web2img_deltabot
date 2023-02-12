@@ -97,7 +97,10 @@ async def _web2img(url: str, snapshot: AttrDict) -> None:
                 size = await take_screenshot(page, cfg, path)
                 if size <= 0:
                     logging.warning("Invalid screenshot size: %s", size)
-                if size <= max_size:
+                    await snapshot.chat.send_message(
+                        text="Failed to fetch URL", quoted_msg=snapshot.id
+                    )
+                elif size <= max_size:
                     await snapshot.chat.send_message(
                         file=str(path), quoted_msg=snapshot.id
                     )
