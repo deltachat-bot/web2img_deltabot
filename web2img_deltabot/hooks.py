@@ -93,7 +93,11 @@ async def _web2img(url: str, snapshot: AttrDict) -> None:
             path = pathlib.Path(tmp_dir, f"screenshot.{cfg.img_type}")
             if get_url(page.url):
                 await asyncio.sleep(5)
-                if await take_screenshot(page, cfg, path):
+                max_size = 1024**2 * 10
+                size = await take_screenshot(page, cfg, path)
+                if size <= 0:
+                    logging.warning("Invalid screenshot size: %s", size)
+                if size <= max_size:
                     await snapshot.chat.send_message(
                         file=str(path), quoted_msg=snapshot.id
                     )
@@ -108,7 +112,7 @@ async def _web2img(url: str, snapshot: AttrDict) -> None:
             await browser.close()
 
 
-async def take_screenshot(page, cfg, path) -> bool:
+async def take_screenshot(page, cfg, path) -> int:
     async def _take_screenshot() -> int:
         return len(
             await page.screenshot(
@@ -123,10 +127,10 @@ async def take_screenshot(page, cfg, path) -> bool:
         )
 
     size = await _take_screenshot()
-    max_size = 1024**2 * 10
+
     cfg.img_type = "jpeg"
     cfg.omit_background = False
-    while size > max_size and cfg.quality >= 40:
+    while size > 1024**2 * 1 and cfg.quality >= 40:
         cfg.quality -= 10
         size = await _take_screenshot()
-    return size <= max_size
+    return size
