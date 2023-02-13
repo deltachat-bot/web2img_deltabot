@@ -7,7 +7,7 @@ A Delta Chat bot that allows saving website URLs as images (taking screenshots o
 ## Install
 
 ```sh
-pip install web2img-deltabot
+pip install git+https://github.com/deltachat-bot/web2img-deltabot.git
 ```
 
 Then, to setup [Playwright](https://playwright.dev/python/docs/intro), run:
@@ -15,6 +15,12 @@ Then, to setup [Playwright](https://playwright.dev/python/docs/intro), run:
 ```sh
 playwright install
 ```
+
+### Installing deltachat-rpc-server
+
+This program depends on a standalone Delta Chat RPC server `deltachat-rpc-server` program that must be
+available in your `PATH`. To install it check:
+https://github.com/deltachat/deltachat-core-rust/tree/master/deltachat-rpc-server
 
 ## Usage
 
