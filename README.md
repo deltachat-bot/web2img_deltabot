@@ -7,7 +7,7 @@ A Delta Chat bot that allows saving website URLs as images (taking screenshots o
 ## Install
 
 ```sh
-pip install git+https://github.com/deltachat-bot/web2img-deltabot.git
+pip install git+https://github.com/deltachat-bot/web2img_deltabot.git
 ```
 
 Then, to setup [Playwright](https://playwright.dev/python/docs/intro), run:
