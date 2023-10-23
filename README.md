@@ -1,7 +1,7 @@
 # Web to Image - Delta Chat Bot
 
 [![Latest Release](https://img.shields.io/pypi/v/web2img-deltabot.svg)](https://pypi.org/project/web2img-deltabot)
-[![CI](https://github.com/deltachat-bot/web2img-deltabot/actions/workflows/python-ci.yml/badge.svg)](https://github.com/deltachat-bot/web2img-deltabot/actions/workflows/python-ci.yml)
+[![CI](https://github.com/deltachat-bot/web2img_deltabot/actions/workflows/python-ci.yml/badge.svg)](https://github.com/deltachat-bot/web2img_deltabot/actions/workflows/python-ci.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 A Delta Chat bot that allows saving website URLs as images (taking screenshots of websites)
