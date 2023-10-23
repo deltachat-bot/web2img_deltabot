@@ -1,5 +1,7 @@
 # Web to Image - Delta Chat Bot
 
+[![Latest Release](https://img.shields.io/pypi/v/web2img-deltabot.svg)](https://pypi.org/project/web2img-deltabot)
+[![CI](https://github.com/deltachat-bot/web2img-deltabot/actions/workflows/python-ci.yml/badge.svg)](https://github.com/deltachat-bot/web2img-deltabot/actions/workflows/python-ci.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 A Delta Chat bot that allows saving website URLs as images (taking screenshots of websites)
@@ -7,7 +9,7 @@ A Delta Chat bot that allows saving website URLs as images (taking screenshots o
 ## Install
 
 ```sh
-pip install git+https://github.com/deltachat-bot/web2img_deltabot.git
+pip install web2img-deltabot
 ```
 
 Then, to setup [Playwright](https://playwright.dev/python/docs/intro), run:
@@ -15,12 +17,6 @@ Then, to setup [Playwright](https://playwright.dev/python/docs/intro), run:
 ```sh
 playwright install
 ```
-
-### Installing deltachat-rpc-server
-
-This program depends on a standalone Delta Chat RPC server `deltachat-rpc-server` program that must be
-available in your `PATH`. To install it check:
-https://github.com/deltachat/deltachat-core-rust/tree/master/deltachat-rpc-server
 
 ## Usage
 
@@ -49,5 +45,3 @@ To see the available options, run in the command line:
 ```
 web2img-bot --help
 ```
-
-**Note:** You can also run the bot CLI with `python -m web2img-deltabot`

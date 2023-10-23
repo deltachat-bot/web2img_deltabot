@@ -1,26 +1,15 @@
 """Utilities"""
-import asyncio
 import re
 from argparse import Namespace
-from typing import Coroutine, Optional
+from typing import Optional
 
 from sqlalchemy.future import select
 
-from .orm import User, async_session
+from .orm import User, session_scope
 
 url_regex = re.compile(
     r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 )
-_background_tasks = set()
-
-
-def run_in_background(coro: Coroutine) -> None:
-    """Schedule the execution of a coroutine object in a spawn task, keeping a
-    reference to the task to avoid it disappearing mid-execution due to GC.
-    """
-    task = asyncio.create_task(coro)
-    _background_tasks.add(task)
-    task.add_done_callback(_background_tasks.discard)
 
 
 def get_url(text: str) -> Optional[str]:
@@ -31,11 +20,11 @@ def get_url(text: str) -> Optional[str]:
     return None
 
 
-async def get_settings(contact_id) -> Namespace:
+def get_settings(contact_id) -> Namespace:
     """Get user settings."""
     stmt = select(User).filter(User.id == contact_id)
-    async with async_session() as session:
-        user = (await session.execute(stmt)).scalars().first()
+    with session_scope() as session:
+        user = session.execute(stmt).scalars().first()
         settings = Namespace(
             browser=user and user.browser,
             img_type=user and user.img_type,

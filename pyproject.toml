@@ -1,31 +1,27 @@
 [build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
+version = "0.1.0"
 name = "web2img-deltabot"
 description = "Delta Chat bot to take website screenshots"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {file = "LICENSE.txt"}
 keywords = ["deltachat", "bot"]
 authors = [
-  {email = "adbenitez@hispanilandia.net"},
-  {name = "adbenitez"}
+  {name = "adbenitez", email = "adbenitez@hispanilandia.net"},
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python"
 ]
-dynamic = [
-    "version"
-]
 dependencies = [
-    "SQLAlchemy>=1.4.44",
-    "aiosqlite>=0.17.0",
-    "aiofiles>=22.1.0",
+    "SQLAlchemy>=2.0.22",
     "playwright>=1.28.0",
-    "deltabot-cli @ git+https://github.com/deltachat-bot/deltabot-cli-py.git",
+    "deltabot-cli",
+    "deltachat-rpc-server",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +32,6 @@ dev = [
   "pylint",
   "pylama",
   "pytest",
-  "types-aiofiles",
 ]
 
 [project.scripts]
