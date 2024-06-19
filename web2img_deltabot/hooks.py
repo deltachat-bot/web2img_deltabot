@@ -30,7 +30,10 @@ cli.add_generic_option(
     help="do not display date timestamp in log messages",
     action="store_false",
 )
-HELP = "📸 I am a Delta Chat bot, send me any website URL to save it as image. Example: https://delta.chat"
+HELP = (
+    "📸 I am a Delta Chat bot, send me any website URL to save it as image."
+    " Example: https://delta.chat"
+)
 
 
 @cli.on_init
