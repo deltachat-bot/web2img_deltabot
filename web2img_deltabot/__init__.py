@@ -1,4 +1,5 @@
 """Bot to take website Screenshots"""
+
 from .hooks import cli
 
 
